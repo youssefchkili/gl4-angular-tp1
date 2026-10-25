@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { EmbaucheService } from '../services/embauche.service';
 import { Cv } from '../model/cv';
-import { NgIf, NgFor } from '@angular/common';
+
 import { ItemComponent } from '../item/item.component';
 
 @Component({
@@ -10,14 +10,17 @@ import { ItemComponent } from '../item/item.component';
     styleUrls: ['./embauche.component.css'],
     standalone: true,
     imports: [
-        NgIf,
-        NgFor,
-        ItemComponent,
-    ],
+    ItemComponent
+],
 })
 export class EmbaucheComponent {
+  private embaucheService = inject(EmbaucheService);
+
   public embauchees: Cv[] = [];
-  constructor(private embaucheService: EmbaucheService) {
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+  constructor() {
     this.embauchees = this.embaucheService.getEmbauchees();
   }
 }

@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { AbstractControl, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CvService } from "../services/cv.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { APP_ROUTES } from "src/config/routes.config";
 import { Cv } from "../model/cv";
-import { NgIf, JsonPipe } from "@angular/common";
+import { JsonPipe } from "@angular/common";
 
 @Component({
     selector: "app-add-cv",
@@ -13,19 +13,21 @@ import { NgIf, JsonPipe } from "@angular/common";
     styleUrls: ["./add-cv.component.css"],
     standalone: true,
     imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgIf,
-        JsonPipe,
-    ],
+    FormsModule,
+    ReactiveFormsModule,
+    JsonPipe
+],
 })
 export class AddCvComponent {
-  constructor(
-    private cvService: CvService,
-    private router: Router,
-    private toastr: ToastrService,
-    private formBuilder: FormBuilder
-  ) {}
+  private cvService = inject(CvService);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
+  private formBuilder = inject(FormBuilder);
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   form = this.formBuilder.group(
     {
