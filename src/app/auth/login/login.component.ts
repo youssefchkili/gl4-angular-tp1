@@ -11,8 +11,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
-    standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule]
 })
 export class LoginComponent {
   private authService = inject(AuthService);

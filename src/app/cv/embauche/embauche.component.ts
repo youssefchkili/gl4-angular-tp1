@@ -8,10 +8,9 @@ import { ItemComponent } from '../item/item.component';
     selector: 'app-embauche',
     templateUrl: './embauche.component.html',
     styleUrls: ['./embauche.component.css'],
-    standalone: true,
     imports: [
-    ItemComponent
-],
+        ItemComponent
+    ]
 })
 export class EmbaucheComponent {
   private embaucheService = inject(EmbaucheService);

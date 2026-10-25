@@ -16,10 +16,9 @@ import { AsyncPipe } from "@angular/common";
     selector: "app-products",
     templateUrl: "./products.component.html",
     styleUrls: ["./products.component.css"],
-    standalone: true,
     imports: [
-    AsyncPipe
-],
+        AsyncPipe
+    ]
 })
 export class ProductsComponent {
   /* Todo : Faire le nécessaire pour créer le flux des produits à afficher */

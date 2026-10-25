@@ -14,7 +14,6 @@ export const fibonnaci = (n: number): number => {
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
     styleUrls: ['./user-list.component.css'],
-    standalone: true,
     imports: [FormsModule]
 })
 export class UserListComponent {

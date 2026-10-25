@@ -6,8 +6,7 @@ import { HighlightDirective } from '../highlight.directive';
     selector: 'app-ngclass',
     templateUrl: './ngclass.component.html',
     styleUrls: ['./ngclass.component.css'],
-    standalone: true,
-    imports: [NgClass, HighlightDirective],
+    imports: [NgClass, HighlightDirective]
 })
 export class NgclassComponent {
   isAllume = false;

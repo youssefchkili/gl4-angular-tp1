@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-card-profil',
     templateUrl: './card-profil.component.html',
     styleUrls: ['./card-profil.component.css'],
-    standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule]
 })
 export class CardProfilComponent {
   name = 'sellaouti';

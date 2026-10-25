@@ -10,11 +10,10 @@ import { DefaultImagePipe } from '../pipes/default-image.pipe';
     selector: 'app-cv-card',
     templateUrl: './cv-card.component.html',
     styleUrls: ['./cv-card.component.css'],
-    standalone: true,
     imports: [
-    RouterLink,
-    DefaultImagePipe
-],
+        RouterLink,
+        DefaultImagePipe
+    ]
 })
 export class CvCardComponent {
   private embaucheService = inject(EmbaucheService);

@@ -9,11 +9,10 @@ import { APP_ROUTES } from '../../../config/routes.config';
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
-    standalone: true,
     imports: [
-    RouterLinkActive,
-    RouterLink
-],
+        RouterLinkActive,
+        RouterLink
+    ]
 })
 export class NavbarComponent {
   authService = inject(AuthService);

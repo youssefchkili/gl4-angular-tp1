@@ -5,7 +5,6 @@ import { RouterOutlet } from '@angular/router';
     selector: 'app-front',
     templateUrl: './front.component.html',
     styleUrls: ['./front.component.css'],
-    standalone: true,
     imports: [RouterOutlet]
 })
 export class FrontComponent {

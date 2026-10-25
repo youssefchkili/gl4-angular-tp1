@@ -6,8 +6,7 @@ import { NgStyle } from "@angular/common";
     selector: "app-slider",
     templateUrl: "./slider.component.html",
     styleUrls: ["./slider.component.css"],
-    standalone: true,
-    imports: [NgStyle],
+    imports: [NgStyle]
 })
 export class SliderComponent {
   @Input() timer = 1500;

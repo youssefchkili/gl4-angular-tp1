@@ -6,7 +6,6 @@ import { UserListComponent } from '../user-list/user-list.component';
     selector: 'app-rh',
     templateUrl: './rh.component.html',
     styleUrls: ['./rh.component.css'],
-    standalone: true,
     imports: [UserListComponent]
 })
 export class RhComponent implements OnInit {

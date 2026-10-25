@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-two',
     templateUrl: './two.component.html',
     styleUrls: ['./two.component.css'],
-    standalone: true,
     imports: [FormsModule]
 })
 export class TwoComponent {

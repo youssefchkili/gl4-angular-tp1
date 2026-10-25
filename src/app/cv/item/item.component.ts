@@ -8,8 +8,7 @@ import { DefaultImagePipe } from "../pipes/default-image.pipe";
     selector: "app-item",
     templateUrl: "./item.component.html",
     styleUrls: ["./item.component.css"],
-    standalone: true,
-    imports: [NgStyle, DefaultImagePipe],
+    imports: [NgStyle, DefaultImagePipe]
 })
 export class ItemComponent {
   private cvService = inject(CvService);

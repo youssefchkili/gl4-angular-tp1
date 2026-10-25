@@ -11,12 +11,11 @@ import { JsonPipe } from "@angular/common";
     selector: "app-add-cv",
     templateUrl: "./add-cv.component.html",
     styleUrls: ["./add-cv.component.css"],
-    standalone: true,
     imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    JsonPipe
-],
+        FormsModule,
+        ReactiveFormsModule,
+        JsonPipe
+    ]
 })
 export class AddCvComponent {
   private cvService = inject(CvService);

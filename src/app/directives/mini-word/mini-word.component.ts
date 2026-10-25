@@ -6,8 +6,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-mini-word',
     templateUrl: './mini-word.component.html',
     styleUrls: ['./mini-word.component.css'],
-    standalone: true,
-    imports: [NgStyle, FormsModule],
+    imports: [NgStyle, FormsModule]
 })
 export class MiniWordComponent {
   color = 'red';

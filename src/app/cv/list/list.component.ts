@@ -7,11 +7,10 @@ import { ItemComponent } from "../item/item.component";
     selector: "app-list",
     templateUrl: "./list.component.html",
     styleUrls: ["./list.component.css"],
-    standalone: true,
     imports: [
-    NgClass,
-    ItemComponent
-],
+        NgClass,
+        ItemComponent
+    ]
 })
 export class ListComponent {
   @Input() cvs: Cv[] | null = [];

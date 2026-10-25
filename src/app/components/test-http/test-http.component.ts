@@ -14,11 +14,10 @@ export interface TodoModel {
     selector: 'app-test-http',
     templateUrl: './test-http.component.html',
     styleUrls: ['./test-http.component.css'],
-    standalone: true,
     imports: [
-    AsyncPipe,
-    JsonPipe
-],
+        AsyncPipe,
+        JsonPipe
+    ]
 })
 export class TestHttpComponent {
   private http = inject(HttpClient);
