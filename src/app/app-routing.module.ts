@@ -12,10 +12,12 @@ import { AddCvComponent } from "./cv/add-cv/add-cv.component";
 import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
+import { NgclassComponent } from "./directives/ngclass/ngclass.component";
 
 const routes: Route[] = [
   { path: "login", component: LoginComponent },
   { path: "rh", component: RhComponent },
+  { path: "rainbow", component: NgclassComponent },
   {
     path: "cv",
     component: CvComponent,
