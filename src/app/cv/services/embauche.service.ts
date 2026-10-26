@@ -1,24 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Cv } from '../model/cv';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmbaucheService {
-  private embauchees: Cv[] = [];
-
-  constructor() {}
+  /**
+   * La liste des embauchees : seul le service peut la modifier
+   */
+  #embauchees = signal<Cv[]>([]);
 
   /**
-   *
-   * Retourne la liste des embauchees
-   *
-   * @returns CV[]
-   *
+   * La liste des embauchees en lecture seule pour les consommateurs
    */
-  getEmbauchees(): Cv[] {
-    return this.embauchees;
-  }
+  readonly embauchees = this.#embauchees.asReadonly();
 
   /**
    *
@@ -29,10 +24,10 @@ export class EmbaucheService {
    * @returns boolean
    */
   embauche(cv: Cv): boolean {
-    if (this.embauchees.indexOf(cv) == -1) {
-      this.embauchees.push(cv);
-      return true;
+    if (this.#embauchees().some((embauchee) => embauchee.id === cv.id)) {
+      return false;
     }
-    return false;
+    this.#embauchees.update((embauchees) => [...embauchees, cv]);
+    return true;
   }
 }
