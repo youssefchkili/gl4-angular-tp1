@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { EMPTY, catchError, switchMap } from 'rxjs';
 import { Cv } from '../model/cv';
 import { CvService } from '../services/cv.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,29 +13,35 @@ import { DefaultImagePipe } from '../pipes/default-image.pipe';
     selector: 'app-details-cv',
     templateUrl: './details-cv.component.html',
     styleUrls: ['./details-cv.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [DefaultImagePipe]
 })
-export class DetailsCvComponent implements OnInit {
+export class DetailsCvComponent {
   private cvService = inject(CvService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private toastr = inject(ToastrService);
-  authService = inject(AuthService);
 
-  cv: Cv | null = null;
+  isAuthenticated = inject(AuthService).isAuthenticated;
 
-  ngOnInit() {
-    const id = this.activatedRoute.snapshot.params['id'];
-    this.cvService.getCvById(+id).subscribe({
-        next: (cv) => {
-          this.cv = cv;
-        },
-        error: (e) => {
-          this.router.navigate([APP_ROUTES.cv]);
-        },
-      });
-  }
+  /**
+   * Le cv dont l'id est dans l'url, rechargé à chaque changement de l'id
+   * Si le cv n'existe pas, on revient à la liste des cvs
+   */
+  cv = toSignal(
+    this.activatedRoute.paramMap.pipe(
+      switchMap((params) =>
+        this.cvService.getCvById(+params.get('id')!).pipe(
+          catchError(() => {
+            this.router.navigate([APP_ROUTES.cv]);
+            return EMPTY;
+          })
+        )
+      )
+    ),
+    { initialValue: null }
+  );
+
   deleteCv(cv: Cv) {
     this.cvService.deleteCvById(cv.id).subscribe({
       next: () => {

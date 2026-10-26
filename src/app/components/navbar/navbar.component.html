@@ -35,7 +35,7 @@
               routerLinkActive="active text-primary"
               >Cv</a
               >
-              @if (authService.isAuthenticated()) {
+              @if (isAuthenticated()) {
                 <a
                   class="nav-link"
                   [routerLink]="['cv/add']"
@@ -73,21 +73,21 @@
                         routerLinkActive="active text-primary"
                         >Rh</a
                         >
-                        @if (!authService.isAuthenticated()) {
+                        @if (connectedUser(); as user) {
+                          <span class="navbar-text mx-2">{{ user.email }}</span>
+                          <a
+                            class="nav-link"
+                            (click)="logout()"
+                            >Logout</a
+                            >
+                        } @else {
                           <a
                             class="nav-link"
                             [routerLink]="['login']"
                             routerLinkActive="active text-primary"
                             >Login</a
                             >
-                          }
-                          @if (authService.isAuthenticated()) {
-                            <a
-                              class="nav-link"
-                              (click)="logout()"
-                              >Logout</a
-                              >
-                            }
+                        }
                           </div>
                         </div>
                       </div>
