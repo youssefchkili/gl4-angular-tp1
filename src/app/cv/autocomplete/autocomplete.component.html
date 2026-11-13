@@ -1,3 +1,71 @@
-<form [formGroup]="form">
-  <input type="text" class="form-control" formControlName="search" />
-</form>
+<div class="autocomplete-container">
+  <div class="mb-3 position-relative">
+    <label for="cv-search-input" class="form-label fw-bold">
+      Recherche de CV par nom
+    </label>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fa fa-search"></i></span>
+      <input
+        #searchInput
+        id="cv-search-input"
+        type="text"
+        class="form-control"
+        [value]="searchTerm()"
+        (input)="updateSearch($event)"
+        placeholder="Tapez un nom pour rechercher..."
+        autocomplete="off"
+      />
+      @if (searchTerm()) {
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="resetSearch(searchInput)"
+          aria-label="Effacer la recherche"
+        >
+          &times;
+        </button>
+      }
+    </div>
+
+    @if (isLoading()) {
+      <div class="form-text text-primary mt-1">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Recherche en cours...
+      </div>
+    }
+  </div>
+
+  @if (searchTerm().trim()) {
+    <div class="search-results shadow-sm mb-3">
+      @if (cvs().length > 0) {
+        <ul class="list-group">
+          @for (cv of cvs(); track cv.id) {
+            <li
+              class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+              style="cursor: pointer"
+              (click)="selectCv(cv)"
+            >
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="'assets/images/' + (cv.path | defaultImage)"
+                  [alt]="cv.name"
+                  class="rounded-circle me-3"
+                  style="width: 42px; height: 42px; object-fit: cover"
+                />
+                <div>
+                  <div class="fw-bold">{{ cv.firstname }} {{ cv.name }}</div>
+                  <small class="text-muted">{{ cv.job }} ({{ cv.age }} ans)</small>
+                </div>
+              </div>
+              <span class="badge bg-primary rounded-pill">Afficher</span>
+            </li>
+          }
+        </ul>
+      } @else if (!isLoading()) {
+        <div class="alert alert-light border text-muted mb-0">
+          Aucun CV trouvé pour « {{ searchTerm() }} »
+        </div>
+      }
+    </div>
+  }
+</div>
