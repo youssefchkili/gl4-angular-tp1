@@ -1,0 +1,23 @@
+.todo-board {
+  background-color: #cdeef5;
+}
+
+.todo-column {
+  min-height: 300px;
+}
+
+.waiting {
+  background-color: #e2e3e5;
+}
+
+.in-progress {
+  background-color: #fff3cd;
+}
+
+.done {
+  background-color: #d1e7dd;
+}
+
+.fa-trash {
+  cursor: pointer;
+}

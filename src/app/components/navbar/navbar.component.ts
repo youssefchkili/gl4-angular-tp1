@@ -8,14 +8,16 @@ import { APP_ROUTES } from '../../../config/routes.config';
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [RouterLinkActive, RouterLink]
 })
 export class NavbarComponent {
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private toastr = inject(ToastrService);
 
+  isAuthenticated = this.authService.isAuthenticated;
+  connectedUser = this.authService.connectedUser;
 
   logout() {
     this.authService.logout();

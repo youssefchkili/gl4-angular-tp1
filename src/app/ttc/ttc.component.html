@@ -1,0 +1,22 @@
+<div class="card ttc">
+  <div class="card-body">
+    <h5 class="card-title">Calcul du prix TTC</h5>
+    <div class="mb-2">
+      <label for="quantity" class="form-label">Quantité</label>
+      <input id="quantity" [(ngModel)]="quantity" type="number" min="1" class="form-control">
+    </div>
+    <div class="mb-2">
+      <label for="price" class="form-label">Prix unitaire HT</label>
+      <input id="price" [(ngModel)]="price" type="number" min="0" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="tva" class="form-label">TVA (%)</label>
+      <input id="tva" [(ngModel)]="tva" type="number" min="0" class="form-control">
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item">Prix unitaire TTC : {{ unitPriceTtc() | number: '1.2-2' }}</li>
+      <li class="list-group-item">Remise : {{ discount() | percent }}</li>
+      <li class="list-group-item active">Prix total TTC : {{ totalTtc() | number: '1.2-2' }}</li>
+    </ul>
+  </div>
+</div>

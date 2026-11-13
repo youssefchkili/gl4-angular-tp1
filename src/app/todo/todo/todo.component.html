@@ -1,18 +1,39 @@
-<div class="row">
-  <div class="col">
-    <ol class="list-group">
-      @for (todo of todos; track todo) {
-        <li class="list-group-item">
-          {{todo.name}} : {{todo.content}}
-          <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-        </li>
-      }
-    </ol>
-  </div>
-  <div class="col">
-    name: <input [(ngModel)]="todo.name" type="text" class="form-control">
-    content: <input [(ngModel)]="todo.content" type="text" class="form-control">
-    <button (click)="addTodo()" [disabled]="!todo.name.trim() || !todo.content.trim()"
-    class="btn btn-primary m-2">add</button>
+<div class="todo-board p-2">
+  <form class="row g-2 mb-2" (ngSubmit)="addTodo()">
+    <div class="col">
+      <input [(ngModel)]="name" name="name" type="text" class="form-control form-control-sm" placeholder="name">
+    </div>
+    <div class="col">
+      <input [(ngModel)]="content" name="content" type="text" class="form-control form-control-sm" placeholder="content">
+    </div>
+    <div class="col-auto">
+      <button type="submit" [disabled]="!canAdd()" class="btn btn-danger btn-sm">add</button>
+    </div>
+  </form>
+
+  <div class="row g-0">
+    @for (column of columns; track column.status) {
+      <div class="col todo-column" [class]="column.cssClass">
+        <h6 class="p-2 m-0">{{ column.title }}</h6>
+        @for (todo of todosByStatus()[column.status]; track todo.id) {
+          <div class="card m-2">
+            <div class="card-body p-2">
+              <div class="d-flex justify-content-between">
+                <strong>{{ todo.name }}</strong>
+                <i (click)="deleteTodo(todo.id)" class="fa fa-trash" aria-hidden="true"></i>
+              </div>
+              <p class="mb-2">{{ todo.content }}</p>
+              @for (target of columns; track target.status) {
+                @if (target.status !== todo.status) {
+                  <button (click)="changeStatus(todo.id, target.status)" class="btn btn-outline-secondary btn-sm me-1">
+                    {{ target.status }}
+                  </button>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>

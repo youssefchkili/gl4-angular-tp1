@@ -1,6 +1,6 @@
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
 import { Cv } from "../model/cv";
-import { Observable, Subject } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { API } from "../../../config/api.config";
 
@@ -12,13 +12,13 @@ export class CvService {
 
   private cvs: Cv[] = [];
   /**
-   * Le subject permettant de créer le flux des cvs sélectionnés
+   * Le cv sélectionné : seul le service peut le modifier
    */
-  #selectCvSuject$ = new Subject<Cv>();
+  #selectedCv = signal<Cv | null>(null);
   /**
-   * Le flux des cvs sélectionnés
+   * Le cv sélectionné en lecture seule pour les consommateurs
    */
-  selectCv$ = this.#selectCvSuject$.asObservable();
+  readonly selectedCv = this.#selectedCv.asReadonly();
   constructor() {
     this.cvs = [
       new Cv(1, "aymen", "sellaouti", "teacher", "as.jpg", "1234", 40),
@@ -51,13 +51,20 @@ export class CvService {
   /**
    *
    * supprime un cv par son id de l'API
+   * Si c'est le cv sélectionné, la sélection est vidée
    *
    * @param id: number
    * @returns CV[]
    *
    */
   deleteCvById(id: number): Observable<any> {
-    return this.http.delete<any>(API.cv + id);
+    return this.http.delete<any>(API.cv + id).pipe(
+      tap(() => {
+        if (this.#selectedCv()?.id === id) {
+          this.#selectedCv.set(null);
+        }
+      })
+    );
   }
 
   addCv(cv: Cv): Observable<Cv> {
@@ -126,11 +133,11 @@ export class CvService {
   }
 
   /**
-   * Permet d'ajouter un cv au flux des cvs sélectionnés
+   * Permet de sélectionner un cv
    *
-   * @param cv : Le cv à ajouter dans le flux des cvs sélectionnés
+   * @param cv : Le cv à sélectionner
    */
   selectCv(cv: Cv) {
-    this.#selectCvSuject$.next(cv);
+    this.#selectedCv.set(cv);
   }
 }

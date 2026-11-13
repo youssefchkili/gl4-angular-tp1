@@ -1,8 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { Todo } from '../model/todo';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { Todo, TodoStatus } from '../model/todo';
 import { LoggerService } from '../../services/logger.service';
-
-let n = 1;
 
 @Injectable({
   providedIn: 'root',
@@ -10,46 +8,70 @@ let n = 1;
 export class TodoService {
   private loggerService = inject(LoggerService);
 
-  private todos: Todo[] = [];
+  private nextId = 1;
 
   /**
-   * elle retourne la liste des todos
-   *
-   * @returns Todo[]
+   * La source de vérité : seul le service peut la modifier
    */
-  getTodos(): Todo[] {
-    return this.todos;
-  }
+  private todosSignal = signal<Todo[]>([]);
 
   /**
-   *Elle permet d'ajouter un todo
-   *
-   * @param todo: Todo
-   *
+   * La liste des todos en lecture seule pour les consommateurs
    */
-  addTodo(todo: Todo): void {
-    this.todos.push(todo);
-  }
+  readonly todos = this.todosSignal.asReadonly();
 
   /**
-   * Delete le todo s'il existe
-   *
-   * @param todo: Todo
-   * @returns boolean
+   * Les todos regroupés par statut, recalculés à chaque modification de la liste.
+   * Changer le statut d'un todo le fait donc automatiquement changer de liste.
    */
-  deleteTodo(todo: Todo): boolean {
-    const index = this.todos.indexOf(todo);
-    if (index > -1) {
-      this.todos.splice(index, 1);
-      return true;
+  readonly todosByStatus = computed(() => {
+    const groups: Record<TodoStatus, Todo[]> = {
+      waiting: [],
+      'in progress': [],
+      done: [],
+    };
+    for (const todo of this.todosSignal()) {
+      groups[todo.status].push(todo);
     }
-    return false;
+    return groups;
+  });
+
+  /**
+   * Elle permet d'ajouter un todo, il commence toujours en attente
+   *
+   * @param name: string
+   * @param content: string
+   */
+  addTodo(name: string, content: string): void {
+    const todo: Todo = { id: this.nextId++, name, content, status: 'waiting' };
+    this.todosSignal.update((todos) => [...todos, todo]);
+  }
+
+  /**
+   * Change le statut du todo ayant cet id
+   *
+   * @param id: number
+   * @param status: TodoStatus
+   */
+  changeStatus(id: number, status: TodoStatus): void {
+    this.todosSignal.update((todos) =>
+      todos.map((todo) => (todo.id === id ? { ...todo, status } : todo))
+    );
+  }
+
+  /**
+   * Delete le todo ayant cet id
+   *
+   * @param id: number
+   */
+  deleteTodo(id: number): void {
+    this.todosSignal.update((todos) => todos.filter((todo) => todo.id !== id));
   }
 
   /**
    * Logger la liste des todos
    */
   logTodos() {
-    this.loggerService.logger(this.todos);
+    this.loggerService.logger(this.todosSignal());
   }
 }

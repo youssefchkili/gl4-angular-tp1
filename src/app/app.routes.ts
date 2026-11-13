@@ -14,11 +14,16 @@ import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { CountryCurrencySelectorComponent } from "./tp2/currency-selector/country-currency-selector.component";
 import { ProductsFilterComponent } from "./tp2/products-filter/products-filter.component";
 
+import { NgclassComponent } from "./directives/ngclass/ngclass.component";
+
+import { TtcComponent } from "./ttc/ttc.component";
+
 export const routes: Routes = [
   { path: "login", component: LoginComponent },
   { path: "rh", component: RhComponent },
   { path: "currency", component: CountryCurrencySelectorComponent },
   { path: "products-filter", component: ProductsFilterComponent },
+  { path: "rainbow", component: NgclassComponent },
   {
     path: "cv",
     component: CvComponent,
@@ -31,6 +36,7 @@ export const routes: Routes = [
     children: [
       { path: "todo", component: TodoComponent },
       { path: "word", component: MiniWordComponent },
+      { path: "ttc", component: TtcComponent },
     ],
   },
   {

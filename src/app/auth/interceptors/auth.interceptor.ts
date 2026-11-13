@@ -13,8 +13,8 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (this.authService.isAuthenticated()) {
-      const token = localStorage.getItem('token') ?? ''
+    const token = this.authService.token();
+    if (token) {
       const cloneReq = request.clone({ setHeaders: {
         'Authorization': token
       } });
