@@ -1,3 +1,65 @@
-<form [formGroup]="form">
-  <input type="text" class="form-control" formControlName="search" />
-</form>
+<div class="autocomplete-container">
+  <form [formGroup]="form">
+    <div class="mb-3 position-relative">
+      <label for="cv-search-input" class="form-label fw-bold">
+        Recherche de CV par nom
+      </label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-search"></i></span>
+        <input
+          id="cv-search-input"
+          type="text"
+          class="form-control"
+          formControlName="search"
+          placeholder="Tapez un nom pour rechercher..."
+          autocomplete="off"
+        />
+        <button
+          *ngIf="search.value"
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="resetSearch()"
+          aria-label="Effacer la recherche"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div *ngIf="isLoading" class="form-text text-primary mt-1">
+        <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+        Recherche en cours...
+      </div>
+    </div>
+  </form>
+
+  <ng-container *ngIf="cvs$ | async as cvs">
+    <div *ngIf="search.value?.trim()" class="search-results shadow-sm mb-3">
+      <ul class="list-group" *ngIf="cvs.length > 0">
+        <li
+          *ngFor="let cv of cvs"
+          class="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+          style="cursor: pointer"
+          (click)="selectCv(cv)"
+        >
+          <div class="d-flex align-items-center">
+            <img
+              [src]="'assets/images/' + (cv.path | defaultImage)"
+              [alt]="cv.name"
+              class="rounded-circle me-3"
+              style="width: 42px; height: 42px; object-fit: cover"
+            />
+            <div>
+              <div class="fw-bold">{{ cv.firstname }} {{ cv.name }}</div>
+              <small class="text-muted">{{ cv.job }} ({{ cv.age }} ans)</small>
+            </div>
+          </div>
+          <span class="badge bg-primary rounded-pill">Afficher</span>
+        </li>
+      </ul>
+
+      <div *ngIf="cvs.length === 0 && !isLoading" class="alert alert-light border text-muted mb-0">
+        Aucun CV trouvé pour « {{ search.value }} »
+      </div>
+    </div>
+  </ng-container>
+</div>

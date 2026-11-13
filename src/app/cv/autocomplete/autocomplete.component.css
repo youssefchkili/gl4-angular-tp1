@@ -1,0 +1,13 @@
+.autocomplete-container {
+  margin-bottom: 1.5rem;
+}
+
+.search-results {
+  max-height: 350px;
+  overflow-y: auto;
+  border-radius: 0.375rem;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
