@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import {
   BehaviorSubject,
   Observable,
@@ -19,6 +19,25 @@ import { Settings } from "./dto/product-settings.dto";
 export class ProductsComponent {
   /* Todo : Faire le nécessaire pour créer le flux des produits à afficher */
   /* Tips : vous pouvez voir les différents imports non utilisés et vous en inspirer */
-  products$!: Observable<Product[]>;
+  private productService = inject(ProductService);
+
+  private readonly pageSize = 12;
+
+  private settings$ = new BehaviorSubject<Settings>({ limit: this.pageSize, skip: 0 });
+
+  products$: Observable<Product[]> = this.settings$.pipe(
+    concatMap((settings) => this.productService.getProducts(settings)),
+    takeWhile((response) => response.skip + response.products.length < response.total, true),
+    map((response) => response.products),
+    scan((all, page) => [...all, ...page], [] as Product[])
+  );
+
+  loadMore() {
+    const { limit, skip } = this.settings$.value;
+    this.settings$.next({ limit, skip: skip + limit });
+  };
+  trackById(index: number, product: Product): number {
+    return product.id;
+  }
   constructor() {}
 }

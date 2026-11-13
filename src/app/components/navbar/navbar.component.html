@@ -35,6 +35,7 @@
           routerLinkActive="active text-primary"
           >Cv</a
         >
+        <a class="nav-link" [routerLink]="['products']" routerLinkActive="active text-primary">Products</a>
         <a
           *ngIf="authService.isAuthenticated()"
           class="nav-link"
