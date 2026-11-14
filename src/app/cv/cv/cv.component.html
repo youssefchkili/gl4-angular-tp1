@@ -10,4 +10,16 @@
     <app-cv-card [cv]="selectedCv()"></app-cv-card>
   </div>
 </div>
-<app-embauche></app-embauche>
+<!--
+  La liste des embauchés n'a rien à afficher tant que personne n'est embauché :
+  on ne l'affiche qu'à ce moment-là, mais on télécharge son code dès que le navigateur est libre
+-->
+@defer (when hasEmbauchees(); prefetch on idle) {
+  <app-embauche></app-embauche>
+} @placeholder {
+  <div class="alert alert-light mt-2">Aucun cv pré-embauché pour le moment</div>
+} @loading (after 100ms; minimum 300ms) {
+  <div class="alert alert-info mt-2">Chargement de la liste des cvs pré-embauchés...</div>
+} @error {
+  <div class="alert alert-danger mt-2">Impossible de charger la liste des cvs pré-embauchés</div>
+}

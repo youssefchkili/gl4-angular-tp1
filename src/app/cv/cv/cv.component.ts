@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy, inject } from "@angular/core";
+import { Component, ChangeDetectionStrategy, computed, inject } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { catchError, of } from "rxjs";
 import { LoggerService } from "../../services/logger.service";
 import { ToastrService } from "ngx-toastr";
 import { CvService } from "../services/cv.service";
+import { EmbaucheService } from "../services/embauche.service";
 import { ListComponent } from "../list/list.component";
 import { CvCardComponent } from "../cv-card/cv-card.component";
 import { EmbaucheComponent } from "../embauche/embauche.component";
@@ -20,6 +21,7 @@ export class CvComponent {
   private logger = inject(LoggerService);
   private toastr = inject(ToastrService);
   private cvService = inject(CvService);
+  private embaucheService = inject(EmbaucheService);
 
   /**
    * Les cvs de l'API, ou les cvs fictifs si le serveur ne répond pas
@@ -36,6 +38,10 @@ export class CvComponent {
     { initialValue: [] }
   );
   selectedCv = this.cvService.selectedCv;
+  /**
+   * Vrai dès qu'au moins un cv est embauché : déclenche le @defer de la liste des embauchés
+   */
+  hasEmbauchees = computed(() => this.embaucheService.embauchees().length > 0);
   date = new Date();
 
   constructor() {

@@ -1,58 +1,78 @@
 import { Routes } from "@angular/router";
-import { TodoComponent } from "./todo/todo/todo.component";
-import { MiniWordComponent } from "./directives/mini-word/mini-word.component";
-import { ColorComponent } from "./components/color/color.component";
 import { FrontComponent } from "./templates/front/front.component";
-import { AdminComponent } from "./templates/admin/admin.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { NF404Component } from "./components/nf404/nf404.component";
-import { AuthGuard } from "./auth/guards/auth.guard";
-import { AddCvComponent } from "./cv/add-cv/add-cv.component";
-import { CvComponent } from "./cv/cv/cv.component";
-import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
-import { AutocompleteComponent } from "./cv/autocomplete/autocomplete.component";
-import { MasterDetailsCvComponent } from "./cv/master-details-cv/master-details-cv.component";
-import { RhComponent } from "./optimizationPattern/rh/rh.component";
-import { CountryCurrencySelectorComponent } from "./tp2/currency-selector/country-currency-selector.component";
-import { ProductsFilterComponent } from "./tp2/products-filter/products-filter.component";
 
-import { NgclassComponent } from "./directives/ngclass/ngclass.component";
-
-import { TtcComponent } from "./ttc/ttc.component";
-
+/**
+ * Stratégie de chargement :
+ * - eager : login, le layout de l'accueil et la 404 (petits et utiles dès le premier écran)
+ * - lazy + préchargé : la feature cv (la plus utilisée, voir SelectivePreloadingStrategy)
+ * - lazy sans préchargement : les autres pages, rarement visitées
+ */
 export const routes: Routes = [
   { path: "login", component: LoginComponent },
-  { path: "rh", component: RhComponent },
-  { path: "currency", component: CountryCurrencySelectorComponent },
-  { path: "products-filter", component: ProductsFilterComponent },
-  { path: "rainbow", component: NgclassComponent },
+  {
+    path: "rh",
+    loadComponent: () =>
+      import("./optimizationPattern/rh/rh.component").then((m) => m.RhComponent),
+  },
+  {
+    path: "currency",
+    loadComponent: () =>
+      import("./tp2/currency-selector/country-currency-selector.component").then(
+        (m) => m.CountryCurrencySelectorComponent
+      ),
+  },
+  {
+    path: "products-filter",
+    loadComponent: () =>
+      import("./tp2/products-filter/products-filter.component").then(
+        (m) => m.ProductsFilterComponent
+      ),
+  },
+  {
+    path: "rainbow",
+    loadComponent: () =>
+      import("./directives/ngclass/ngclass.component").then((m) => m.NgclassComponent),
+  },
   {
     path: "cv",
-    component: CvComponent,
+    loadChildren: () => import("./cv/cv.routes").then((m) => m.CV_ROUTES),
+    data: { preload: true },
   },
-  // Avant "cv/:id", sinon "list" serait pris pour un id
-  {
-    path: "cv/list",
-    component: MasterDetailsCvComponent,
-    children: [{ path: ":id", component: DetailsCvComponent }],
-  },
-  { path: "cv/add", component: AddCvComponent, canActivate: [AuthGuard] },
-  { path: "cv/autocomplete", component: AutocompleteComponent },
-  { path: "cv/:id", component: DetailsCvComponent },
   {
     path: "",
     component: FrontComponent,
     children: [
-      { path: "todo", component: TodoComponent },
-      { path: "word", component: MiniWordComponent },
-      { path: "ttc", component: TtcComponent },
+      {
+        path: "todo",
+        loadComponent: () =>
+          import("./todo/todo/todo.component").then((m) => m.TodoComponent),
+      },
+      {
+        path: "word",
+        loadComponent: () =>
+          import("./directives/mini-word/mini-word.component").then(
+            (m) => m.MiniWordComponent
+          ),
+      },
+      {
+        path: "ttc",
+        loadComponent: () => import("./ttc/ttc.component").then((m) => m.TtcComponent),
+      },
     ],
   },
   {
     path: "admin",
-    component: AdminComponent,
-    children: [{ path: "color", component: ColorComponent }],
+    loadComponent: () =>
+      import("./templates/admin/admin.component").then((m) => m.AdminComponent),
+    children: [
+      {
+        path: "color",
+        loadComponent: () =>
+          import("./components/color/color.component").then((m) => m.ColorComponent),
+      },
+    ],
   },
   { path: "**", component: NF404Component },
 ];
-
