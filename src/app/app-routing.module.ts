@@ -11,6 +11,7 @@ import { AuthGuard } from "./auth/guards/auth.guard";
 import { AddCvComponent } from "./cv/add-cv/add-cv.component";
 import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
+import { AutocompleteComponent } from "./cv/autocomplete/autocomplete.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { NgclassComponent } from "./directives/ngclass/ngclass.component";
 import { ProductsComponent } from "./products/products.component";
@@ -24,6 +25,7 @@ const routes: Route[] = [
     component: CvComponent,
   },
   { path: "cv/add", component: AddCvComponent, canActivate: [AuthGuard] },
+  { path: "cv/autocomplete", component: AutocompleteComponent },
   { path: "cv/:id", component: DetailsCvComponent },
   {
     path: "",
