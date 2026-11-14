@@ -1,20 +1,16 @@
-<p>products-filter Exo</p>
-
-<input class="form-control"  #form type="text"   placeholder="Search products">
-<select class="form-control" #filter>
+<h1 class="h4">Product Filter</h1>
+<input class="form-control mb-2" type="text" placeholder="Search products" aria-label="Search products" [(ngModel)]="search">
+<select class="form-select mb-2" aria-label="Product category" [(ngModel)]="category">
   <option value="">All</option>
   @for (c of categories; track c) {
-  <option [value]="c">{{ c }}</option>
+    <option [value]="c">{{ c }}</option>
   }
 </select>
-<section>
-  <button class="btn btn-danger" (click)="reset()">Reset</button>
-</section>
+<button class="btn btn-danger mb-3" type="button" (click)="reset()">Reset</button>
 <ul class="list-group">
-  @for (product of products; track product.name) {
-  <li class="list-group-item">
-    {{ product.name }} <small>({{ product.category }})</small>
-  </li>
+  @for (product of filteredProducts(); track product.name) {
+    <li class="list-group-item">{{ product.name }} <small>({{ product.category }})</small></li>
+  } @empty {
+    <li class="list-group-item">No products found</li>
   }
 </ul>
-
