@@ -35,6 +35,13 @@
               routerLinkActive="active text-primary"
               >Cv</a
               >
+            <a
+              class="nav-link"
+              [routerLinkActiveOptions]="{ exact: true }"
+              [routerLink]="['cv/autocomplete']"
+              routerLinkActive="active text-primary"
+              >Autocomplete</a
+              >
               @if (isAuthenticated()) {
                 <a
                   class="nav-link"
