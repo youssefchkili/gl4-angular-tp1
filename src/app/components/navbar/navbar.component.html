@@ -42,6 +42,12 @@
               routerLinkActive="active text-primary"
               >Autocomplete</a
               >
+              <a
+                class="nav-link"
+                [routerLink]="['cv', 'list']"
+                routerLinkActive="active text-primary"
+                >List</a
+                >
               @if (isAuthenticated()) {
                 <a
                   class="nav-link"

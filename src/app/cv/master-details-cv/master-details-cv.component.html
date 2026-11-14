@@ -1,0 +1,20 @@
+<div class="row">
+  <!-- Vue maître : chaque cv mène à son détail via la route fille :id -->
+  <div class="col-md-5">
+    <div class="list-group">
+      @for (cv of cvs(); track cv.id) {
+        <a
+          class="list-group-item list-group-item-action"
+          [routerLink]="[cv.id]"
+          routerLinkActive="active"
+          >
+          <app-item [cv]="cv" />
+        </a>
+      }
+    </div>
+  </div>
+  <!-- Vue détail : la route fille (DetailsCvComponent) s'affiche ici -->
+  <div class="col-md-7">
+    <router-outlet />
+  </div>
+</div>

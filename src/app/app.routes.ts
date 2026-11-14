@@ -11,6 +11,7 @@ import { AddCvComponent } from "./cv/add-cv/add-cv.component";
 import { CvComponent } from "./cv/cv/cv.component";
 import { DetailsCvComponent } from "./cv/details-cv/details-cv.component";
 import { AutocompleteComponent } from "./cv/autocomplete/autocomplete.component";
+import { MasterDetailsCvComponent } from "./cv/master-details-cv/master-details-cv.component";
 import { RhComponent } from "./optimizationPattern/rh/rh.component";
 import { CountryCurrencySelectorComponent } from "./tp2/currency-selector/country-currency-selector.component";
 import { ProductsFilterComponent } from "./tp2/products-filter/products-filter.component";
@@ -28,6 +29,12 @@ export const routes: Routes = [
   {
     path: "cv",
     component: CvComponent,
+  },
+  // Avant "cv/:id", sinon "list" serait pris pour un id
+  {
+    path: "cv/list",
+    component: MasterDetailsCvComponent,
+    children: [{ path: ":id", component: DetailsCvComponent }],
   },
   { path: "cv/add", component: AddCvComponent, canActivate: [AuthGuard] },
   { path: "cv/autocomplete", component: AutocompleteComponent },
